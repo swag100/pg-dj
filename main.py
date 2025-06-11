@@ -6,8 +6,8 @@ class Game:
     def __init__(self):
         pygame.init()
 
-        width, height = utils.WINDOW_SIZE
-        self.screen = pygame.display.set_mode((width, height))
+        self.width, self.height = utils.WINDOW_SIZE
+        self.screen = pygame.display.set_mode(utils.WINDOW_SIZE)
         self.clock = pygame.time.Clock()
 
         self.done = False
@@ -24,14 +24,6 @@ class Game:
                 pass #state handles event
 
     def update(self, dt):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_a]:
-            self.float_x += utils.WINDOW_SIZE[0] / self.scrubber.wav.duration * dt #use sample length for 1 second? i think?
-        if keys[pygame.K_d]:
-            self.float_x -= utils.WINDOW_SIZE[0] / self.scrubber.wav.duration * dt
-        
-        self.scrubber.wav.rect.x = self.float_x
-    
         self.scrubber.update(dt)
 
     def draw(self):
