@@ -1,6 +1,6 @@
 import pygame
 import utils
-import waveform
+import scrubber
 
 class Game:
     def __init__(self):
@@ -12,8 +12,9 @@ class Game:
 
         self.done = False
 
-        self.wav = waveform.Waveform("FL stock.wav", pygame.Rect(0, 0, width, height))
-        self.float_x = self.wav.rect.x
+        self.scrubber = scrubber.Scrubber()
+
+        self.float_x = self.scrubber.wav.rect.x
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -25,16 +26,18 @@ class Game:
     def update(self, dt):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
-            self.float_x += utils.WINDOW_SIZE[0] / self.wav.duration * dt #use sample length for 1 second? i think?
+            self.float_x += utils.WINDOW_SIZE[0] / self.scrubber.wav.duration * dt #use sample length for 1 second? i think?
         if keys[pygame.K_d]:
-            self.float_x -= utils.WINDOW_SIZE[0] / self.wav.duration * dt
+            self.float_x -= utils.WINDOW_SIZE[0] / self.scrubber.wav.duration * dt
         
-        self.wav.rect.x = self.float_x
+        self.scrubber.wav.rect.x = self.float_x
+    
+        self.scrubber.update(dt)
 
     def draw(self):
         self.screen.fill((0,0,0))
 
-        self.wav.draw(self.screen)
+        self.scrubber.draw(self.screen)
 
         font = pygame.font.SysFont("Arial", 18) 
         fps = str(int(self.clock.get_fps()))

@@ -8,7 +8,7 @@ class Waveform:
         #Read file and get sampling freq [ usually 44100 Hz ]  and sound object
         self.rate, self.data = wavfile.read('sounds/' + filename)
 
-        #We can convert our sound array to floating point values ranging from -1 to 1 as follows
+
         self.data = self.data / (2**15)
 
         self.rect = rect
@@ -23,12 +23,12 @@ class Waveform:
 
         self.image = self.get_image()
 
-    def get_image(self):
+    def get_image(self, channel = 0):
         new_surface = pygame.Surface((self.rect.w, self.rect.h), pygame.SRCALPHA)
 
         #gets worse the longer the sound becomes.
         x_data = utils.resample(self.time_array, int(self.rect.w * self.duration)) 
-        y_data = utils.resample(self.data[:,0], int(self.rect.w * self.duration))
+        y_data = utils.resample(self.data[:,channel], int(self.rect.w * self.duration))
         
         # Draw the line graph
         for i in range(len(x_data) - 1):
